@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<script>
+    var obj={
+        rows:[
+            ["lisa",16,"Female",'200-12-01'],
+            ['Bob',22,'Male','1996-01-21']
+        ],
+        metaData:[
+            {name:"name",note:''},
+            {name:"age",note:''},
+            {name:"gender",note:''},
+            {name:"birthday",note:''},
+        ]
+    }
+    var arr=[]
+    for(var i=0;i<obj.rows.length;i++){
+        var item={}
+        for(var j=0;j<obj.rows[i].length;j++){
+            item[obj.metaData[j].name]=obj.rows[i][j]
+        }
+        arr.push(item)
+    }
+    console.log(arr)
+
+</script>
+</body>
+</html>
