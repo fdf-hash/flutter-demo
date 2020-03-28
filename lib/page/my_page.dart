@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:dio/dio.dart'; //http请求组件
 import 'package:flutter_screenutil/flutter_screenutil.dart'; //  屏幕适配
-import 'package:provide/provide.dart';
-import '../provide/state.dart';
 
 class MyPageWidget extends StatefulWidget {
   @override
@@ -13,7 +11,7 @@ class MyPageWidget extends StatefulWidget {
 }
 
 class MyPageWidgetState extends State<MyPageWidget> {
-  List<dynamic> arr = [];
+  List<dynamic> arr;
   void initState() {
     //页面初始化
     super.initState();
@@ -43,7 +41,9 @@ class MyPageWidgetState extends State<MyPageWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
+    return arr==null?new Center(
+      child: Text('骚等'),
+    ): new Scaffold(
         appBar: AppBar(
           leading: Icon(Icons.person),
           centerTitle: true,
@@ -74,39 +74,7 @@ class MyPageWidgetState extends State<MyPageWidget> {
                 padding: EdgeInsets.fromLTRB(5, 5, 5, 5),
               ),
               new Container(child: Image.network('${this.arr[0]['pic']}')),
-              Number(),
-              Mybutton()
             ]));
   }
 }
 
-class Number extends StatelessWidget {
-  const Number({Key key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-        margin: EdgeInsets.only(top: 10),
-        child: Provide<Couter>(
-          //
-          builder: (context, child, couter) {
-            return Text('${couter.value}');
-          },
-        ));
-  }
-}
-
-class Mybutton extends StatelessWidget {
-  const Mybutton({Key key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-        child: RaisedButton(
-      onPressed: () {
-        Provide.value<Couter>(context).add();
-      },
-      child: Text('+++'),
-    ));
-  }
-}

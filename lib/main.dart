@@ -31,8 +31,8 @@ class MyIndex extends StatefulWidget {
 class MyNav extends State<MyIndex> {
   var index = 0;
   List<StatefulWidget> list = [
-    ClassPageWidget(),
     HomePageWidget(),
+    ClassPageWidget(),
     CartPageWidget(),
     MyPageWidget(),
   ];

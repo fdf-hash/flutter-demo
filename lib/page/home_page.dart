@@ -16,9 +16,13 @@ class HomePageWidget extends StatefulWidget {
 }
 
 class HomePageWidgetState extends State<HomePageWidget> {
+  // 上拉加载
+  bool isLoading = false;
+  ScrollController scrollController = ScrollController();
+  // 加载更多请求后返回数据存放数组
   bool absorb = true;
   // 轮播
-  List<dynamic> arr = [];
+  List arr;
   // 新品推荐
   List newList;
   // 热门
@@ -64,15 +68,10 @@ class HomePageWidgetState extends State<HomePageWidget> {
     });
   }
 
-// 上拉加载
-  bool isLoading = false;
-  ScrollController scrollController = ScrollController();
-  // 加载更多请求后返回数据存放数组
   List nine2;
   void initState() {
     //页面初始化
     super.initState();
-    // onRefresh();
     // 轮播
     getHttp();
     // 新品
@@ -116,21 +115,17 @@ class HomePageWidgetState extends State<HomePageWidget> {
   Future nineHttp2() async {
     pageNum++;
     var da = {'page': '$pageNum'};
-    print(da);
+    // print(da);
     await request("homeHotList", "get", da).then((val) {
       //九宫格
-      // print(val['result']);
-
       setState(() {
         nine2 = val['result'];
         nine.addAll(nine2);
       });
       print(val['result'].length);
       if (val['result'].length < 10) {
-        print(11111);
         setState(() {
           this.absorb = false;
-          // this.isLoading = false;
         });
         renderBottom();
       } else {
@@ -207,12 +202,12 @@ class HomePageWidgetState extends State<HomePageWidget> {
 // 新品推荐
   Future newHttp() async {
     var da = {'is_new': 1};
-    print(da);
+    // print(da);
     await request("homeHotList", "get", da).then((val) {
       print('开始新品');
       setState(() {
         newList = val['result'];
-        print(newList);
+        // print(newList);
       });
       newList.forEach((item) =>
           {item['pic'] = item['pic'].replaceAll(new RegExp(r'\\'), '/')});
@@ -222,12 +217,11 @@ class HomePageWidgetState extends State<HomePageWidget> {
 // 热门推荐
   Future hotHttp() async {
     var da = {'is_hot': 1};
-    print(da);
+    // print(da);
     await request("homeHotList", "get", da).then((val) {
       print('开始热门');
       setState(() {
         hotList = val['result'];
-        print(newList);
       });
       hotList.forEach((item) =>
           {item['pic'] = item['pic'].replaceAll(new RegExp(r'\\'), '/')});
@@ -237,12 +231,12 @@ class HomePageWidgetState extends State<HomePageWidget> {
   // 精华推荐
   Future bestHttp() async {
     var da = {'is_best': 1};
-    print(da);
+    // print(da);
     await request("homeHotList", "get", da).then((val) {
       print('开始热门');
       setState(() {
         bestList = val['result'];
-        print(newList);
+        // print(bestList);
       });
       bestList.forEach((item) =>
           {item['pic'] = item['pic'].replaceAll(new RegExp(r'\\'), '/')});
@@ -252,12 +246,12 @@ class HomePageWidgetState extends State<HomePageWidget> {
   //页面初始化请求全部商品
   Future nineHttp() async {
     var da = {'page': '$pageNum'};
-    print(da);
+    // print(da);
     await request("homeHotList", "get", da).then((val) {
       print('开始');
       setState(() {
         nine = val['result'];
-        print(nine);
+        // print(nine);
       });
       nine.forEach((item) =>
           {item['pic'] = item['pic'].replaceAll(new RegExp(r'\\'), '/')});
@@ -590,122 +584,126 @@ class HomePageWidgetState extends State<HomePageWidget> {
         ),
         // 下拉刷新
         // onRefresh: this.onRefresh,
-        body: ListView(
-            // 上拉加载
-            controller: this.scrollController,
-            // mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              new Container(
-                child: new Swiper(
-                  //轮播
-                  itemBuilder: (BuildContext context, int index) {
-                    return Container(
-                      child: Image.network(
-                        'http://jd.itying.com/${arr[index]['pic']}',
-                        fit: BoxFit.fill,
-                      ),
-                      width: ScreenUtil().setWidth(750),
-                      height: ScreenUtil().setHeight(356),
-                    );
-                  },
-                  itemCount: arr.length,
-                  autoplay: true,
-                  loop: true,
-                  pagination: new SwiperPagination(
-                      builder: DotSwiperPaginationBuilder(
-                    color: Colors.white,
-                    activeColor: Color(0xffe62565),
-                  )),
-                ),
-                width: double.infinity,
-                height: 160,
-              ),
-              new Container(
-                //九宫格
-                width: ScreenUtil().setWidth(750),
-                height: ScreenUtil().setHeight(260),
-                padding: EdgeInsets.fromLTRB(
-                    ScreenUtil().setWidth(36), 0, ScreenUtil().setWidth(36), 0),
-                margin: EdgeInsets.fromLTRB(
-                  0,
-                  ScreenUtil().setWidth(16),
-                  0,
-                  ScreenUtil().setWidth(40),
-                ),
-                child: Wrap(
-                  spacing: ScreenUtil().setWidth(55), //横向间距
-                  runSpacing: ScreenUtil().setHeight(18), //纵向间距
-                  runAlignment: WrapAlignment.start, //纵向排列方式
-                  children: <Widget>[
-                    Mynine('images/life_07.jpg', '白酒'),
-                    Mynine('images/life_09.jpg', '啤酒'),
-                    Mynine('images/life_11.jpg', '葡萄酒'),
-                    Mynine('images/life_13.jpg', '清酒洋酒'),
-                    Mynine('images/life_15.jpg', '保健酒'),
-                    Mynine('images/life_22.jpg', '预调酒'),
-                    Mynine('images/life_23.jpg', '下菜小酒'),
-                    Mynine('images/life_24.jpg', '饮料'),
-                    Mynine('images/life_25.jpg', '乳制品'),
-                    Mynine('images/life_26.jpg', '休闲零食')
-                  ],
-                ),
-              ),
-              new Container(
-                child: Image.asset('images/life_32.jpg'),
-                width: ScreenUtil().setWidth(750),
-                height: ScreenUtil().setHeight(90),
-              ),
-              // 新品专区
-              new Container(
-                child: Text(
-                  '新品专区',
-                  textAlign: TextAlign.center,
-                ),
-                padding: EdgeInsets.only(top: ScreenUtil().setHeight(5)),
-                margin: EdgeInsets.only(bottom: ScreenUtil().setHeight(10)),
-              ),
-              new Container(
-                child: _newList(context),
-              ),
-              // 热门专区
-              new Container(
-                child: Text(
-                  '热门专区',
-                  textAlign: TextAlign.center,
-                ),
-                padding: EdgeInsets.only(top: ScreenUtil().setHeight(40)),
-                margin: EdgeInsets.only(bottom: ScreenUtil().setHeight(20)),
-              ),
-              new Container(
-                child: _HotList(context),
-              ),
-              // 精华专区
-              new Container(
-                child: Text(
-                  '精华专区',
-                  textAlign: TextAlign.center,
-                ),
-                padding: EdgeInsets.only(top: ScreenUtil().setHeight(40)),
-                margin: EdgeInsets.only(bottom: ScreenUtil().setHeight(20)),
-              ),
-              new Container(
-                child: _BestList(context),
-              ),
-              // 全部商品
-              new Container(
-                child: Text(
-                  '全部商品',
-                  textAlign: TextAlign.center,
-                ),
-                padding: EdgeInsets.only(top: ScreenUtil().setHeight(40)),
-                margin: EdgeInsets.only(bottom: ScreenUtil().setHeight(20)),
-              ),
-              new Container(
-                child: _hotList(
-                    context), //创建的自定义组件   拿来这里进行渲染 要带参数context    语法就这样
-              ),
-              renderBottom(),
-            ]));
+        // RefreshIndicator
+        body: RefreshIndicator(
+            onRefresh: this.onRefresh,
+            child: ListView(
+                // 上拉加载
+                controller: this.scrollController,
+
+                // mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  new Container(
+                    child: new Swiper(
+                      //轮播
+                      itemBuilder: (BuildContext context, int index) {
+                        return Container(
+                          child: Image.network(
+                            'http://jd.itying.com/${arr[index]['pic']}',
+                            fit: BoxFit.fill,
+                          ),
+                          width: ScreenUtil().setWidth(750),
+                          height: ScreenUtil().setHeight(356),
+                        );
+                      },
+                      itemCount: 3,
+                      autoplay: true,
+                      loop: true,
+                      pagination: new SwiperPagination(
+                          builder: DotSwiperPaginationBuilder(
+                        color: Colors.white,
+                        activeColor: Color(0xffe62565),
+                      )),
+                    ),
+                    width: double.infinity,
+                    height: 160,
+                  ),
+                  new Container(
+                    //九宫格
+                    width: ScreenUtil().setWidth(750),
+                    height: ScreenUtil().setHeight(260),
+                    padding: EdgeInsets.fromLTRB(ScreenUtil().setWidth(36), 0,
+                        ScreenUtil().setWidth(36), 0),
+                    margin: EdgeInsets.fromLTRB(
+                      0,
+                      ScreenUtil().setWidth(16),
+                      0,
+                      ScreenUtil().setWidth(40),
+                    ),
+                    child: Wrap(
+                      spacing: ScreenUtil().setWidth(55), //横向间距
+                      runSpacing: ScreenUtil().setHeight(18), //纵向间距
+                      runAlignment: WrapAlignment.start, //纵向排列方式
+                      children: <Widget>[
+                        Mynine('images/life_07.jpg', '白酒'),
+                        Mynine('images/life_09.jpg', '啤酒'),
+                        Mynine('images/life_11.jpg', '葡萄酒'),
+                        Mynine('images/life_13.jpg', '清酒洋酒'),
+                        Mynine('images/life_15.jpg', '保健酒'),
+                        Mynine('images/life_22.jpg', '预调酒'),
+                        Mynine('images/life_23.jpg', '下菜小酒'),
+                        Mynine('images/life_24.jpg', '饮料'),
+                        Mynine('images/life_25.jpg', '乳制品'),
+                        Mynine('images/life_26.jpg', '休闲零食')
+                      ],
+                    ),
+                  ),
+                  new Container(
+                    child: Image.asset('images/life_32.jpg'),
+                    width: ScreenUtil().setWidth(750),
+                    height: ScreenUtil().setHeight(90),
+                  ),
+                  // 新品专区
+                  new Container(
+                    child: Text(
+                      '新品专区',
+                      textAlign: TextAlign.center,
+                    ),
+                    padding: EdgeInsets.only(top: ScreenUtil().setHeight(5)),
+                    margin: EdgeInsets.only(bottom: ScreenUtil().setHeight(10)),
+                  ),
+                  new Container(
+                    child: _newList(context),
+                  ),
+                  // 热门专区
+                  new Container(
+                    child: Text(
+                      '热门专区',
+                      textAlign: TextAlign.center,
+                    ),
+                    padding: EdgeInsets.only(top: ScreenUtil().setHeight(40)),
+                    margin: EdgeInsets.only(bottom: ScreenUtil().setHeight(20)),
+                  ),
+                  new Container(
+                    child: _HotList(context),
+                  ),
+                  // 精华专区
+                  new Container(
+                    child: Text(
+                      '精华专区',
+                      textAlign: TextAlign.center,
+                    ),
+                    padding: EdgeInsets.only(top: ScreenUtil().setHeight(40)),
+                    margin: EdgeInsets.only(bottom: ScreenUtil().setHeight(20)),
+                  ),
+                  new Container(
+                    child: _BestList(context),
+                  ),
+                  // 全部商品
+                  new Container(
+                    child: Text(
+                      '全部商品',
+                      textAlign: TextAlign.center,
+                    ),
+                    padding: EdgeInsets.only(top: ScreenUtil().setHeight(40)),
+                    margin: EdgeInsets.only(bottom: ScreenUtil().setHeight(20)),
+                  ),
+                  new Container(
+                    child: _hotList(
+                        context), //创建的自定义组件   拿来这里进行渲染 要带参数context    语法就这样
+                  ),
+                  renderBottom(),
+                ])));
   }
 }
 

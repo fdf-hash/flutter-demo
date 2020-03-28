@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provide/provide.dart';
-import '../provide/state.dart';
 class CartPageWidget extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
@@ -27,46 +26,10 @@ class CartPageWidgetState extends State<CartPageWidget> {
             size: 130.0,
             color: Colors.blue,
           ),
-          Number(),
-          Mybutton()
         ],
       )),
     );
   }
 }
 
-class Number extends StatelessWidget {
-  const Number({Key key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.only(top:10),
-      child: Provide<Couter>(
-        // 
-        builder:(context,child,couter){
-          return Text(
-            '${couter.value}'
-          );
-        },
-      )
-    );
-  }
-}
-
-class Mybutton extends StatelessWidget {
-  const Mybutton({Key key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: RaisedButton(
-        onPressed: (){
-          Provide.value<Couter>(context).add();
-        },
-        child: Text('+++'),
-      )
-    );
-  }
-}
 
