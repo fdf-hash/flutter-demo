@@ -34,7 +34,7 @@ class HomePageWidgetState extends State<HomePageWidget> {
   Future onRefresh() {
     return Future.delayed(Duration(seconds: 1), () {
       setState(() {
-        pageNum=1;
+        pageNum = 1;
       });
       // 轮播
       getHttp();
@@ -46,7 +46,7 @@ class HomePageWidgetState extends State<HomePageWidget> {
       bestHttp();
       // 全部商品
       nineHttp();
-      
+
       // 给列表滚动添加监听
       this.scrollController.addListener(() {
         // 滑动到底部的关键判断
@@ -581,10 +581,16 @@ class HomePageWidgetState extends State<HomePageWidget> {
   Widget build(BuildContext context) {
     //  if判断  如果图片未加载，那么显示正在加载
 
-    return RefreshIndicator(
+    return Scaffold(
+        appBar: AppBar(
+          leading: Icon(Icons.people),
+          centerTitle: true,
+          title: Text('百姓生活+'),
+          backgroundColor: Color(0xffe62565),
+        ),
         // 下拉刷新
-        onRefresh: this.onRefresh,
-        child: ListView(
+        // onRefresh: this.onRefresh,
+        body: ListView(
             // 上拉加载
             controller: this.scrollController,
             // mainAxisSize: MainAxisSize.min,

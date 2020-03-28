@@ -3,10 +3,12 @@ import 'dart:io';
 // import './path.dart';
 const server = 'http://jd.itying.com';
 const serverPath={
+  // 轮播
   'homeBanner':server+'/api/focus',
+  // 首页商品列表
   'homeHotList':server+'/api/plist',
-  // 分类
-  'CidList':server+'/api/plist/cid'
+  // 分类商品列表
+  'classList':server+'/api/pcate',
 };
 Future request(url, method, data) async {
   try {

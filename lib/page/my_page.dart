@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:dio/dio.dart'; //http请求组件
-import 'package:flutter_screenutil/flutter_screenutil.dart';//  屏幕适配
+import 'package:flutter_screenutil/flutter_screenutil.dart'; //  屏幕适配
+import 'package:provide/provide.dart';
+import '../provide/state.dart';
 
 class MyPageWidget extends StatefulWidget {
   @override
@@ -11,23 +13,23 @@ class MyPageWidget extends StatefulWidget {
 }
 
 class MyPageWidgetState extends State<MyPageWidget> {
-  List<dynamic> arr=[];
+  List<dynamic> arr = [];
   void initState() {
     //页面初始化
     super.initState();
-    getHttp().then((val){
+    getHttp().then((val) {
       print(val['result']);
       setState(() {
-        arr=val['result'];
+        arr = val['result'];
       });
       print(arr);
-      arr.forEach((item)=>{
-        item['pic']=item['pic'].replaceAll(new RegExp(r'\\'),'/')
-      });
+      arr.forEach((item) =>
+          {item['pic'] = item['pic'].replaceAll(new RegExp(r'\\'), '/')});
     });
   }
 
-  Future getHttp() async {//Future  异步处理
+  Future getHttp() async {
+    //Future  异步处理
     try {
       Response response;
       Dio dio = new Dio(); //http请求实例化
@@ -41,31 +43,70 @@ class MyPageWidgetState extends State<MyPageWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return new ListView(
-        // mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          new Container(
-            child: new Swiper(
-              itemBuilder: (BuildContext context, int index) {
-                return Container(
-                  child: Image.network(
-                    'http://jd.itying.com/${arr[index]['pic']}',
-                    fit: BoxFit.fill,
-                  ),
-                );
-              },
-              itemCount: 3,
-              autoplay: true,
-              loop: true,
-              pagination: new SwiperPagination(builder: SwiperPagination.dots),
-            ),
-            width: double.infinity,
-            height: 200,
-            padding: EdgeInsets.fromLTRB(5, 5, 5, 5),
-          ),
-          new Container(
-            child: Image.network('${this.arr[0]['pic']}')
-          )
-        ]);
+    return new Scaffold(
+        appBar: AppBar(
+          leading: Icon(Icons.person),
+          centerTitle: true,
+          title: Text('个人中心'),
+          backgroundColor: Color(0xffe62565),
+        ),
+        body: new ListView(
+            // mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              new Container(
+                child: new Swiper(
+                  itemBuilder: (BuildContext context, int index) {
+                    return Container(
+                      child: Image.network(
+                        'http://jd.itying.com/${arr[index]['pic']}',
+                        fit: BoxFit.fill,
+                      ),
+                    );
+                  },
+                  itemCount: 3,
+                  autoplay: true,
+                  loop: true,
+                  pagination:
+                      new SwiperPagination(builder: SwiperPagination.dots),
+                ),
+                width: double.infinity,
+                height: 200,
+                padding: EdgeInsets.fromLTRB(5, 5, 5, 5),
+              ),
+              new Container(child: Image.network('${this.arr[0]['pic']}')),
+              Number(),
+              Mybutton()
+            ]));
+  }
+}
+
+class Number extends StatelessWidget {
+  const Number({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        margin: EdgeInsets.only(top: 10),
+        child: Provide<Couter>(
+          //
+          builder: (context, child, couter) {
+            return Text('${couter.value}');
+          },
+        ));
+  }
+}
+
+class Mybutton extends StatelessWidget {
+  const Mybutton({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        child: RaisedButton(
+      onPressed: () {
+        Provide.value<Couter>(context).add();
+      },
+      child: Text('+++'),
+    ));
   }
 }

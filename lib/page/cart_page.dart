@@ -1,51 +1,72 @@
 import 'package:flutter/material.dart';
-
-class CartPageWidget extends StatefulWidget{
+import 'package:provide/provide.dart';
+import '../provide/state.dart';
+class CartPageWidget extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
     return new CartPageWidgetState();
   }
 }
 
-class CartPageWidgetState extends State<CartPageWidget>{
-  List list=[1,2,3];
+class CartPageWidgetState extends State<CartPageWidget> {
+  List list = [1, 2, 3];
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      // appBar: new AppBar(
-      //   title: new Text('购物车'),
-      // ),
-      body: new Center(
-        child: Column(children: <Widget>[
-          Icon(Icons.shopping_cart,size: 130.0,color: Colors.blue,),
-          Ztext('来了', Colors.red),
-          Ztext('来了', Colors.red[50]),
-          Ztext('来了', Colors.red[100]),
-          Ztext('来了', Colors.red[200]),
-          Ztext('来了', Colors.blue),
-          f()
-        ],)
+      appBar: AppBar(
+        leading: Icon(Icons.shopping_cart),
+        centerTitle: true,
+        title: Text('购物车'),
+        backgroundColor: Color(0xffe62565),
       ),
+      body: new Center(
+          child: Column(
+        children: <Widget>[
+          Icon(
+            Icons.shopping_cart,
+            size: 130.0,
+            color: Colors.blue,
+          ),
+          Number(),
+          Mybutton()
+        ],
+      )),
     );
-  }
-  Widget f(){
-    List<Widget> items = [];
-    for (var item in list){
-      items.add(Row(children: <Widget>[new Text('$item')],));
-    }
-    return Column(children:items,);
   }
 }
 
-class Ztext extends StatelessWidget {
-  // const Ztext({Key key}) : super(key: key);
-  String title;
-  Color yanse;
+class Number extends StatelessWidget {
+  const Number({Key key}) : super(key: key);
+
   @override
-  Ztext(this.title,this.yanse);
   Widget build(BuildContext context) {
     return Container(
-      child: Text(title,style: TextStyle(color: yanse),),
+      margin: EdgeInsets.only(top:10),
+      child: Provide<Couter>(
+        // 
+        builder:(context,child,couter){
+          return Text(
+            '${couter.value}'
+          );
+        },
+      )
     );
   }
 }
+
+class Mybutton extends StatelessWidget {
+  const Mybutton({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: RaisedButton(
+        onPressed: (){
+          Provide.value<Couter>(context).add();
+        },
+        child: Text('+++'),
+      )
+    );
+  }
+}
+
