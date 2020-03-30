@@ -1,13 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart'; //  屏幕适配
 import 'page/home_page.dart';
-import 'page/classification_page.dart';
+// import 'page/classification_page.dart';//兄弟传值
+import 'page/class_page.dart'; //provider
 import 'page/cart_page.dart';
 import 'page/my_page.dart';
+import 'package:provide/provide.dart';
+import './provide/state.dart';
 
+void main() {
+  var counter = Couter();
+  var providers = Providers();
 
-void main()=>runApp(MyApp());
+  providers..provide(Provider<Couter>.value(counter));
 
+  runApp(ProviderNode(
+    child: MyApp(),
+    providers: providers,
+  ));
+}
 
 class MyApp extends StatelessWidget {
   const MyApp({Key key}) : super(key: key);
@@ -17,7 +28,6 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: MyIndex(),
-      
     );
   }
 }
@@ -31,8 +41,8 @@ class MyIndex extends StatefulWidget {
 class MyNav extends State<MyIndex> {
   var index = 0;
   List<StatefulWidget> list = [
-    HomePageWidget(),
     ClassPageWidget(),
+    HomePageWidget(),
     CartPageWidget(),
     MyPageWidget(),
   ];

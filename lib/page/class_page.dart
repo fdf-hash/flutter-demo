@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import '../http/server.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart'; //  屏幕适配
-import './details_page.dart';
-import '../event_bus/event_bus.dart';
+import './details_page.dart'; //详情页
+import '../event_bus/event_bus.dart'; //兄弟传值
+import 'package:provide/provide.dart';
+import '../provide/state.dart';
 
 class ClassPageWidget extends StatefulWidget {
   @override
@@ -21,11 +23,11 @@ class ClassPageWidgetState extends State<ClassPageWidget> {
         title: Text('商品分类'),
         backgroundColor: Color(0xffe62565),
       ),
-      body: Container(
-        child: Row(
+      body: Container(child: Provide<Couter>(builder: (context, child, couter) {
+        return Row(
           children: <Widget>[LeftCategoryNav(), RightCategoryNav()],
-        ),
-      ),
+        );
+      })),
     );
   }
 }
@@ -47,20 +49,22 @@ class _LeftCategoryNavState extends State<LeftCategoryNav> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: ScreenUtil().setWidth(180),
-      decoration: BoxDecoration(
-          color: Colors.white,
-          border: Border(
-            right: BorderSide(width: 1.0, color: Colors.black12), //有边框
-          )),
-      child: ListView.builder(
-        itemCount: list.length,
-        itemBuilder: (contex, index) {
-          return _leftInkWell(index);
-        },
-      ),
-    );
+    return Provide<Couter>(builder: (context, child, couter) {
+      return Container(
+        width: ScreenUtil().setWidth(180),
+        decoration: BoxDecoration(
+            color: Colors.white,
+            border: Border(
+              right: BorderSide(width: 1.0, color: Colors.black12), //有边框
+            )),
+        child: ListView.builder(
+          itemCount: list.length,
+          itemBuilder: (contex, index) {
+            return _leftInkWell(index);
+          },
+        ),
+      );
+    });
   }
 
   Widget _leftInkWell(int index) {
@@ -68,9 +72,8 @@ class _LeftCategoryNavState extends State<LeftCategoryNav> {
     isRighrBool = (index == isRight) ? true : false;
     return InkWell(
       onTap: () {
-        eventBus.fire(new UserLoggedInEvent(list[index]['_id']));
-        eventBus.fire(new ClassPage(list[index]['_id']));
         // print(list[index]['_id']);
+        Provide.value<Couter>(context).classLeft(list[index]['_id']); //点击获取id传值
         setState(() {
           isRight = index;
         });
@@ -85,8 +88,11 @@ class _LeftCategoryNavState extends State<LeftCategoryNav> {
                 Border(bottom: BorderSide(width: 1.0, color: Colors.black12))),
         child: Text(
           list[index]['title'],
-          style:
-              TextStyle(fontSize: ScreenUtil().setSp(28),color: isRighrBool ? Colors.white : Colors.black), //设置字体大小，为了兼容使用setSp
+          style: TextStyle(
+              fontSize: ScreenUtil().setSp(28),
+              color: isRighrBool
+                  ? Colors.white
+                  : Colors.black), //设置字体大小，为了兼容使用setSp
         ),
       ),
     );
@@ -116,7 +122,7 @@ class _RightCategoryNav extends State<RightCategoryNav> {
       width: ScreenUtil().setWidth(570),
       child: Column(
         // width: ScreenUtil().setWidth(570),
-        children: <Widget>[RightTopNav(),RightDetails()],
+        children: <Widget>[RightTopNav(), RightDetails()],
       ),
     );
   }
@@ -130,73 +136,49 @@ class RightTopNav extends StatefulWidget {
 
 // 右侧导航的顶部导航
 class _RightTopNav extends State<RightTopNav> {
-  var url = '59f1e1ada1da8b15d42234e9';
   int num = 0;
-  List list = [
-    '白酒',
-    '葡萄酒',
-    '黄酒',
-    '清酒',
-    '可乐',
-    '清酒',
-    '保健酒',
-    '洋酒',
-    '预调酒',
-    '下菜小酒',
-    '饮料',
-    '乳制品',
-    '休闲粮食'
-  ];
+  var url = '59f1e1ada1da8b15d42234e9';
+  List arr = [];
   void initState() {
     super.initState();
-    _RightTophttp();
+    RightTophttp();
   }
 
-  // 二级分类请求
-  void _RightTophttp() async {
+  RightTophttp() async {
     var da = {'pid': '$url'};
     await request('classList', 'get', da).then((val) {
-      // print('二级分');
-      // print(val['result']);
       setState(() {
-        list = val['result'];
+        arr = val['result'];
       });
-    });
-  }
-
-  // 监听url地址改变
-  void _listen() {
-    eventBus.on<UserLoggedInEvent>().listen((event) {
-      print(1111);
-      // print(event.text);
-      setState(() {
-        url = event.text;
-        num = 0;
-      });
-      _RightTophttp();
-      // print(url);
+      // print(list);
+      arr.forEach((item) =>
+          {item['pic'] = item['pic'].replaceAll(new RegExp(r'\\'), '/')});
+      // 这里表示页面初始化刷新获取到的数据数据
+      Provide.value<Couter>(context).arr = arr;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    _listen();
-    return new Container(
-      width: ScreenUtil().setWidth(570),
-      height: ScreenUtil().setHeight(88),
-      decoration: BoxDecoration(
-          color: Colors.white,
-          border:
-              Border(bottom: BorderSide(width: 1.0, color: Colors.black12))),
-      child: ListView.builder(
-        // width: ScreenUtil().setWidth(570),
-        scrollDirection: Axis.horizontal,
-        itemCount: list.length,
-        itemBuilder: (context, index) {
-          return _RightInkll(list[index]['title'], index);
-        },
-      ),
-    );
+    return Provide<Couter>(builder: (context, child, couter) {
+      return new Container(
+        // child: Text('${couter.arr}')
+        width: ScreenUtil().setWidth(570),
+        height: ScreenUtil().setHeight(88),
+        decoration: BoxDecoration(
+            color: Colors.white,
+            border:
+                Border(bottom: BorderSide(width: 1.0, color: Colors.black12))),
+        child: ListView.builder(
+          // width: ScreenUtil().setWidth(570),
+          scrollDirection: Axis.horizontal,
+          itemCount: couter.arr.length,
+          itemBuilder: (context, index) {
+            return _RightInkll(couter.arr[index]['title'], index);
+          },
+        ),
+      );
+    });
     //二级分类请求接口
   }
 
@@ -206,9 +188,7 @@ class _RightTopNav extends State<RightTopNav> {
     erji = (num == index) ? false : true;
     return InkWell(
       onTap: () {
-        // print(index);
-        eventBus.fire(new ClassPage(list[index]['pid']));//传值
-        print(list[index]['_id']);
+        // print(item[index]['_id']);
         setState(() {
           num = index;
         });
@@ -237,7 +217,7 @@ class _RightDetailsState extends State<RightDetails> {
   var url = '59f1e1ada1da8b15d42234e9';
   List list = [];
   // 监听url地址变化
-  
+
   @override
   void initState() {
     super.initState();
@@ -254,37 +234,29 @@ class _RightDetailsState extends State<RightDetails> {
       // print(list);
       list.forEach((item) =>
           {item['pic'] = item['pic'].replaceAll(new RegExp(r'\\'), '/')});
-    });
-  }
-  void listen() {
-    eventBus.on<ClassPage>().listen((event) {
-      // print(2222);
-      // print(event.text);
-      setState(() {
-        url = event.text;
-      });
-      _RightTophttp();
-      // print(url);
+      Provide.value<Couter>(context).list = list;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    listen();
-    return Container(
-      // color: Colors.white,
-      width: ScreenUtil().setWidth(570),
-      height: ScreenUtil().setHeight(1100),
-      child: ListView.builder(
-        itemCount: list.length,
-        itemBuilder: (context, index) {
-          return _RightDetails(list[index], index);
-        },
-      ),
-    );
+    // provider传输数据
+    return Provide<Couter>(builder: (context, child, couter) {
+      return Container(
+        color: Colors.white,
+        width: ScreenUtil().setWidth(570),
+        height: ScreenUtil().setHeight(1100),
+        child: ListView.builder(
+          itemCount: couter.list.length,
+          itemBuilder: (context, index) {
+            return _RightDetails(couter.list[index], index);
+          },
+        ),
+      );
+    });
   }
 
-  Widget _RightDetails(dynamic item, index) {
+  Widget _RightDetails(item, index) {
     return new Container(
       margin: EdgeInsets.only(
           left: ScreenUtil().setWidth(2),
@@ -295,11 +267,12 @@ class _RightDetailsState extends State<RightDetails> {
       color: Colors.white,
       child: Row(
         children: <Widget>[
+          // Text('${item}')
           Container(
             width: ScreenUtil().setWidth(198),
             height: ScreenUtil().setHeight(210),
             child: Image.network(
-              "http://jd.itying.com/${list[index]['pic']}",
+              "http://jd.itying.com/${item['pic']}",
               width: ScreenUtil().setWidth(198),
               height: ScreenUtil().setHeight(210),
               fit: BoxFit.cover,

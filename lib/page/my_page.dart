@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:dio/dio.dart'; //http请求组件
 import 'package:flutter_screenutil/flutter_screenutil.dart'; //  屏幕适配
+import 'package:provide/provide.dart';
+import '../provide/state.dart';
 
 class MyPageWidget extends StatefulWidget {
   @override
@@ -41,40 +43,64 @@ class MyPageWidgetState extends State<MyPageWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return arr==null?new Center(
-      child: Text('骚等'),
-    ): new Scaffold(
-        appBar: AppBar(
-          leading: Icon(Icons.person),
-          centerTitle: true,
-          title: Text('个人中心'),
-          backgroundColor: Color(0xffe62565),
-        ),
-        body: new ListView(
-            // mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              new Container(
-                child: new Swiper(
-                  itemBuilder: (BuildContext context, int index) {
-                    return Container(
-                      child: Image.network(
-                        'http://jd.itying.com/${arr[index]['pic']}',
-                        fit: BoxFit.fill,
-                      ),
+    return arr == null
+        ? new Center(
+            child: Text('骚等'),
+          )
+        : new Scaffold(
+            appBar: AppBar(
+              leading: Icon(Icons.person),
+              centerTitle: true,
+              title: Text('个人中心'),
+              backgroundColor: Color(0xffe62565),
+            ),
+            body: new ListView(
+                // mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  new Container(
+                    child: new Swiper(
+                      itemBuilder: (BuildContext context, int index) {
+                        return Container(
+                          child: Image.network(
+                            'http://jd.itying.com/${arr[index]['pic']}',
+                            fit: BoxFit.fill,
+                          ),
+                        );
+                      },
+                      itemCount: 3,
+                      autoplay: true,
+                      loop: true,
+                      pagination:
+                          new SwiperPagination(builder: SwiperPagination.dots),
+                    ),
+                    width: double.infinity,
+                    height: 200,
+                    padding: EdgeInsets.fromLTRB(5, 5, 5, 5),
+                  ),
+                  Provide<Couter>(builder: (context, child, couter) {
+                    return Text(
+                      '${couter.value}',
+                      style: TextStyle(fontSize: ScreenUtil().setSp(30)),
                     );
-                  },
-                  itemCount: 3,
-                  autoplay: true,
-                  loop: true,
-                  pagination:
-                      new SwiperPagination(builder: SwiperPagination.dots),
-                ),
-                width: double.infinity,
-                height: 200,
-                padding: EdgeInsets.fromLTRB(5, 5, 5, 5),
-              ),
-              new Container(child: Image.network('${this.arr[0]['pic']}')),
-            ]));
+                    // MyButton()
+                  }),
+                  MyButton()
+                ]));
   }
 }
 
+class MyButton extends StatelessWidget {
+  const MyButton({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: RaisedButton(
+        onPressed: () {
+          Provide.value<Couter>(context).add();
+        },
+        child: Text('增加'),
+      ),
+    );
+  }
+}
