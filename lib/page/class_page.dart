@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import '../http/server.dart';
+import '../http/server.dart';// 封装接口文件
 import 'package:flutter_screenutil/flutter_screenutil.dart'; //  屏幕适配
-import './details_page.dart'; //详情页
-import '../event_bus/event_bus.dart'; //兄弟传值
 import 'package:provide/provide.dart';
 import '../provide/state.dart';
+import '../router/routerapply.dart';
 
 class ClassPageWidget extends StatefulWidget {
   @override
@@ -268,16 +267,7 @@ class _RightDetailsState extends State<RightDetails> {
       child: Row(
         children: <Widget>[
           // Text('${item}')
-          Container(
-            width: ScreenUtil().setWidth(198),
-            height: ScreenUtil().setHeight(210),
-            child: Image.network(
-              "http://jd.itying.com/${item['pic']}",
-              width: ScreenUtil().setWidth(198),
-              height: ScreenUtil().setHeight(210),
-              fit: BoxFit.cover,
-            ),
-          ),
+          _DetailsImage(item,index),
           new Column(
             children: <Widget>[
               Container(
@@ -316,6 +306,25 @@ class _RightDetailsState extends State<RightDetails> {
             ],
           )
         ],
+      ),
+    );
+  }
+
+  Widget _DetailsImage(item,index) {
+    return InkWell(
+      onTap: () {
+        print(item['title']);
+        Routerapply.router.navigateTo(context, '/details?id=${item['pid']}');
+      },
+      child: Container(
+        width: ScreenUtil().setWidth(198),
+        height: ScreenUtil().setHeight(210),
+        child: Image.network(
+          "http://jd.itying.com/${item['pic']}",
+          width: ScreenUtil().setWidth(198),
+          height: ScreenUtil().setHeight(210),
+          fit: BoxFit.cover,
+        ),
       ),
     );
   }

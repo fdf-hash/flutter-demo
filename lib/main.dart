@@ -5,15 +5,15 @@ import 'page/home_page.dart';
 import 'page/class_page.dart'; //provider
 import 'page/cart_page.dart';
 import 'page/my_page.dart';
-import 'package:provide/provide.dart';
+import 'package:provide/provide.dart';//provide
 import './provide/state.dart';
-
+import 'package:fluro/fluro.dart';//路由
+import './router/routermain.dart';
+import './router/routerapply.dart';
 void main() {
   var counter = Couter();
   var providers = Providers();
-
   providers..provide(Provider<Couter>.value(counter));
-
   runApp(ProviderNode(
     child: MyApp(),
     providers: providers,
@@ -22,11 +22,14 @@ void main() {
 
 class MyApp extends StatelessWidget {
   const MyApp({Key key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
+  final router = Router();//初始化路由
+  Routes.configRoutes(router);//注入路由
+  Routerapply.router = router;//静态化
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+      onGenerateRoute: Routerapply.router.generator,//静态化 直接使用  只用引入Routerapply
       home: MyIndex(),
     );
   }

@@ -9,6 +9,8 @@ const serverPath={
   'homeHotList':server+'/api/plist',
   // 分类商品列表
   'classList':server+'/api/pcate',
+  //商品详情页
+  'detailsList':server+'/api/pcontent',
 };
 Future request(url, method, data) async {
   try {
