@@ -6,7 +6,7 @@ import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart'; //  屏幕适配
 import '../http/server.dart';
 import 'package:toast/toast.dart';
-
+import '../router/routerapply.dart';
 // import '../http//path.dart';
 class HomePageWidget extends StatefulWidget {
   @override
@@ -521,51 +521,57 @@ class HomePageWidgetState extends State<HomePageWidget> {
   Widget _best(BuildContext context, items) {
     // 相当于 75行   children: items, 中的items    下面就是循环遍历    自己写样式  再看372-374
     return Container(
-      child: Column(
-        children: <Widget>[
-          new Container(
-            width: ScreenUtil().setWidth(368),
-            height: ScreenUtil().setHeight(440),
-            color: Colors.white,
-            child: new Column(
-              children: <Widget>[
-                new Container(
-                  child: Image.network(
-                    'http://jd.itying.com/' + items['pic'],
-                    width: ScreenUtil().setHeight(368),
-                    height: ScreenUtil().setHeight(345),
+      child: InkWell(
+        onTap: () {
+          print(items['_id']);
+          Routerapply.router.navigateTo(context, '/details?id=${items['_id']}');
+        },
+        child: Column(
+          children: <Widget>[
+            new Container(
+              width: ScreenUtil().setWidth(368),
+              height: ScreenUtil().setHeight(440),
+              color: Colors.white,
+              child: new Column(
+                children: <Widget>[
+                  new Container(
+                    child: Image.network(
+                      'http://jd.itying.com/' + items['pic'],
+                      width: ScreenUtil().setHeight(368),
+                      height: ScreenUtil().setHeight(345),
+                    ),
                   ),
-                ),
-                new Container(
-                  child: Text(
-                    items['title'],
-                    style: TextStyle(
-                        color: Colors.red, fontSize: ScreenUtil().setSp(25)),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
+                  new Container(
+                    child: Text(
+                      items['title'],
+                      style: TextStyle(
+                          color: Colors.red, fontSize: ScreenUtil().setSp(25)),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ),
-                ),
-                new Container(
-                  child: Row(
-                    children: <Widget>[
-                      new Container(
-                          child: Text('￥${items['price']}',
-                              style:
-                                  TextStyle(fontSize: ScreenUtil().setSp(20)))),
-                      new Container(
-                          child: Text('￥${items['old_price']}',
-                              style: TextStyle(
-                                  fontSize: ScreenUtil().setSp(20),
-                                  decoration: TextDecoration.lineThrough,
-                                  color: Color(0xffcccccc)))),
-                    ],
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  ),
-                )
-              ],
+                  new Container(
+                    child: Row(
+                      children: <Widget>[
+                        new Container(
+                            child: Text('￥${items['price']}',
+                                style: TextStyle(
+                                    fontSize: ScreenUtil().setSp(20)))),
+                        new Container(
+                            child: Text('￥${items['old_price']}',
+                                style: TextStyle(
+                                    fontSize: ScreenUtil().setSp(20),
+                                    decoration: TextDecoration.lineThrough,
+                                    color: Color(0xffcccccc)))),
+                      ],
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    ),
+                  )
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

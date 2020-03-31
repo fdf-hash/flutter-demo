@@ -47,6 +47,7 @@ class _LeftCategoryNavState extends State<LeftCategoryNav> {
   }
 
   @override
+  //左侧大类导航
   Widget build(BuildContext context) {
     return Provide<Couter>(builder: (context, child, couter) {
       return Container(
@@ -313,8 +314,8 @@ class _RightDetailsState extends State<RightDetails> {
   Widget _DetailsImage(item,index) {
     return InkWell(
       onTap: () {
-        print(item['title']);
-        Routerapply.router.navigateTo(context, '/details?id=${item['pid']}');
+        print(item['id']);
+        Routerapply.router.navigateTo(context, '/details?id=${item['_id']}');
       },
       child: Container(
         width: ScreenUtil().setWidth(198),

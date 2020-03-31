@@ -24,9 +24,11 @@ class MyApp extends StatelessWidget {
   const MyApp({Key key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+
   final router = Router();//初始化路由
   Routes.configRoutes(router);//注入路由
   Routerapply.router = router;//静态化
+  
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       onGenerateRoute: Routerapply.router.generator,//静态化 直接使用  只用引入Routerapply
@@ -44,8 +46,8 @@ class MyIndex extends StatefulWidget {
 class MyNav extends State<MyIndex> {
   var index = 0;
   List<StatefulWidget> list = [
-    ClassPageWidget(),
     HomePageWidget(),
+    ClassPageWidget(),
     CartPageWidget(),
     MyPageWidget(),
   ];
