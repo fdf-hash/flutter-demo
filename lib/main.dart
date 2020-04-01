@@ -7,13 +7,20 @@ import 'page/cart_page.dart';
 import 'page/my_page.dart';
 import 'package:provide/provide.dart';//provide
 import './provide/state.dart';
+import './provide/details_state.dart';
+import './provide/cart_details.dart';
 import 'package:fluro/fluro.dart';//路由
 import './router/routermain.dart';
 import './router/routerapply.dart';
 void main() {
   var counter = Couter();
+  var detailsprovide = DetailsProvide();
+  var cartdetails = Cartadd();
   var providers = Providers();
-  providers..provide(Provider<Couter>.value(counter));
+  providers
+  ..provide(Provider<Couter>.value(counter))
+  ..provide(Provider<DetailsProvide>.value(detailsprovide))
+  ..provide(Provider<Cartadd>.value(cartdetails));
   runApp(ProviderNode(
     child: MyApp(),
     providers: providers,
@@ -56,7 +63,7 @@ class MyNav extends State<MyIndex> {
     ScreenUtil.instance = ScreenUtil(width: 750, height: 1521)
       ..init(context); //设置页面的宽高  尺寸  屏幕适配
     return Scaffold(
-      body: list[this.index],
+      body: IndexedStack(index:this.index,children:list),
       bottomNavigationBar: BottomNavigationBar(
         items: [
           BottomNavigationBarItem(

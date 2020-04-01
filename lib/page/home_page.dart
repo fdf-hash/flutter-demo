@@ -4,10 +4,11 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_swiper/flutter_swiper.dart'; //轮播组件
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart'; //  屏幕适配
+import 'package:provide/provide.dart';
 import '../http/server.dart';
 import 'package:toast/toast.dart';
 import '../router/routerapply.dart';
-// import '../http//path.dart';
+import '../provide/details_state.dart';
 class HomePageWidget extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
@@ -286,7 +287,13 @@ class HomePageWidgetState extends State<HomePageWidget> {
   //214行 _hot就是这个 自定义组件   全部商品渲染
   Widget _hot(BuildContext context, items) {
     // 相当于 75行   children: items, 中的items    下面就是循环遍历    自己写样式  再看372-374
-    return Container(
+    return InkWell(
+      onTap: (){
+         print(items['_id']);
+          Routerapply.router.navigateTo(context, '/details?id=${items['_id']}');
+          Provide.value<DetailsProvide>(context).detailsId(items['_id']);
+      },
+      child: Container(
       child: Column(
         children: <Widget>[
           new Container(
@@ -333,6 +340,7 @@ class HomePageWidgetState extends State<HomePageWidget> {
           ),
         ],
       ),
+    ),
     );
   }
 
@@ -364,7 +372,13 @@ class HomePageWidgetState extends State<HomePageWidget> {
   //292行 _new就是这个 自定义组件    新品渲染
   Widget _new(BuildContext context, items) {
     // 相当于 75行   children: items, 中的items    下面就是循环遍历    自己写样式  再看372-374
-    return Container(
+    return InkWell(
+      onTap: (){
+         print(items['_id']);
+          Routerapply.router.navigateTo(context, '/details?id=${items['_id']}');
+          Provide.value<DetailsProvide>(context).detailsId(items['_id']);
+      },
+      child: Container(
       child: Column(
         children: <Widget>[
           new Container(
@@ -411,6 +425,7 @@ class HomePageWidgetState extends State<HomePageWidget> {
           ),
         ],
       ),
+    ),
     );
   }
 
@@ -442,7 +457,13 @@ class HomePageWidgetState extends State<HomePageWidget> {
   //370行 _new就是这个 自定义组件    热门渲染
   Widget _Hot(BuildContext context, items) {
     // 相当于 75行   children: items, 中的items    下面就是循环遍历    自己写样式  再看372-374
-    return Container(
+    return InkWell(
+      onTap: (){
+         print(items['_id']);
+          Routerapply.router.navigateTo(context, '/details?id=${items['_id']}');
+          Provide.value<DetailsProvide>(context).detailsId(items['_id']);
+      },
+      child: Container(
       child: Column(
         children: <Widget>[
           new Container(
@@ -489,6 +510,7 @@ class HomePageWidgetState extends State<HomePageWidget> {
           ),
         ],
       ),
+    ),
     );
   }
 
@@ -525,6 +547,7 @@ class HomePageWidgetState extends State<HomePageWidget> {
         onTap: () {
           print(items['_id']);
           Routerapply.router.navigateTo(context, '/details?id=${items['_id']}');
+          Provide.value<DetailsProvide>(context).detailsId(items['_id']);
         },
         child: Column(
           children: <Widget>[

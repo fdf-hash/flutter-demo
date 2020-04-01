@@ -316,6 +316,7 @@ class _RightDetailsState extends State<RightDetails> {
       onTap: () {
         print(item['id']);
         Routerapply.router.navigateTo(context, '/details?id=${item['_id']}');
+
       },
       child: Container(
         width: ScreenUtil().setWidth(198),

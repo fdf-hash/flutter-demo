@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provide/provide.dart';
+import '../provide/cart_details.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart'; //  屏幕适配
 import '../provide/state.dart';
 
 class CartPageWidget extends StatefulWidget {
@@ -15,46 +17,100 @@ class CartPageWidgetState extends State<CartPageWidget> {
   Widget build(BuildContext context) {
     return new Scaffold(
       appBar: AppBar(
-        leading: Icon(Icons.shopping_cart),
+        // leading: Icon(Icons.shopping_cart),
         centerTitle: true,
         title: Text('购物车'),
         backgroundColor: Color(0xffe62565),
       ),
       body: new Center(
-          child: Column(
+          child: ListView(
         children: <Widget>[
-          Icon(
-            Icons.shopping_cart,
-            size: 130.0,
-            color: Colors.blue,
-          ),
-          Provide<Couter>(
-            builder: (context, child, couter) {
-              return Text(
-                '${couter.value}',//获取
-                style: TextStyle(fontSize: 30.0),
-              );
+          Provide<Cartadd>(
+            builder: (context, child, val) {
+              return Stack(
+                    alignment: Alignment.center,
+                    children: <Widget>[
+                      Positioned(
+                        // width: ScreenUtil().setWidth(750),
+                        // height: ScreenUtil().setHeight(100),
+                        // top: 0,
+                        child: Container(
+                          width: double.infinity,
+                          height: ScreenUtil().setHeight(100),
+                          color: Colors.white,
+                          child: Row(
+                            children: <Widget>[
+                              Container(
+                                width: ScreenUtil().setWidth(150),
+                                child: Row(
+                                  children: <Widget>[
+                                    Checkbox(
+                                      value: false,
+                                      activeColor: Colors.red,
+                                      onChanged: (val) {
+                                        Provide.value<Cartadd>(context)
+                                            .cartFlage();
+                                      },
+                                    ),
+                                    Text(
+                                      '全选',
+                                      style: TextStyle(
+                                          fontSize: ScreenUtil().setSp(24)),
+                                    )
+                                  ],
+                                ),
+                              ),
+                              Container(
+                                height: ScreenUtil().setHeight(100),
+                                margin: EdgeInsets.only(
+                                    left: ScreenUtil().setWidth(120),
+                                    right: ScreenUtil().setWidth(22)),
+                                child: Column(
+                                  children: <Widget>[
+                                    Row(
+                                      children: <Widget>[
+                                        Text(
+                                          '合计:',
+                                          style: TextStyle(
+                                              fontSize: ScreenUtil().setSp(24)),
+                                        ),
+                                        Text(
+                                          '11',
+                                          style: TextStyle(
+                                              color: Colors.red,
+                                              fontSize: ScreenUtil().setSp(24)),
+                                        )
+                                      ],
+                                    ),
+                                    Text('满10元免配送费,预购免配送费',
+                                        style: TextStyle(
+                                            color: Colors.red,
+                                            fontSize: ScreenUtil().setSp(24)))
+                                  ],
+                                ),
+                              ),
+                              Container(
+                                width: ScreenUtil().setWidth(120),
+                                height: ScreenUtil().setHeight(60),
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                    color: Colors.red,
+                                    borderRadius: BorderRadius.circular(6)),
+                                child: Text(
+                                  '结算(5)',
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  );
             },
           ),
-          MyButton()
         ],
       )),
-    );
-  }
-}
-
-class MyButton extends StatelessWidget {
-  const MyButton({Key key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: RaisedButton(
-          onPressed: () {
-            Provide.value<Couter>(context).add();
-          },
-          child: Text('增加'),
-        ),
     );
   }
 }
