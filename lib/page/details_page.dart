@@ -22,41 +22,38 @@ class _DetailsState extends State<Details> {
     super.initState();
     print(this.goodsId);
   }
+
   var data;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Color(0xfffafafa),
-        appBar: AppBar(
-          centerTitle: true,
-          title: Text('商品详情'),
-          backgroundColor: Color(0xffe62565),
-        ),
-        body: ConstrainedBox(
-            constraints: BoxConstraints.expand(),
-            child: Stack(
-              alignment: Alignment.center,
-              children: <Widget>[
-                Positioned(
-                  width: ScreenUtil().setWidth(750),
-                  height: ScreenUtil().setHeight(1330),
-                  top: 0,
-                  child: FutureBuilder(
-                    future:
-                        request('detailsList', 'get', {'id': widget.goodsId}),
-                    builder: (context, res) {
-                      print(1111111111111);
-                      print(res.data['result']);
-                      print(1111111111111);
-                      data=res.data['result'];
-                      res.data['result']['pic'] = res.data['result']['pic']
-                          .replaceAll(new RegExp(r'\\'), '/');
-                      if (res.data == null) {
-                        return new Center(
-                          child: Text('正在加载。。'),
-                        );
-                      } else {
-                        return ListView(
+      backgroundColor: Color(0xfffafafa),
+      appBar: AppBar(
+        centerTitle: true,
+        title: Text('商品详情'),
+        backgroundColor: Color(0xffe62565),
+      ),
+      body: FutureBuilder(
+        future: request('detailsList', 'get', {'id': widget.goodsId}),
+        builder: (context, res) {
+          print(res.data['result']);
+          res.data['result']['pic'] =
+              res.data['result']['pic'].replaceAll(new RegExp(r'\\'), '/');
+          if (res.data == null) {
+            return new Center(
+              child: Text('正在加载。。'),
+            );
+          } else {
+            return ConstrainedBox(
+                constraints: BoxConstraints.expand(),
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: <Widget>[
+                    Positioned(
+                        width: ScreenUtil().setWidth(750),
+                        height: ScreenUtil().setHeight(1330),
+                        top: 0,
+                        child: ListView(
                           children: <Widget>[
                             _DetailsImage(res.data['result']['pic']),
                             new Container(
@@ -94,19 +91,19 @@ class _DetailsState extends State<Details> {
                               ),
                             ),
                           ],
-                        );
-                      }
-                    },
-                  ),
-                ),
-                Positioned(
-                    left: 0,
-                    bottom: 0,
-                    width: ScreenUtil().setWidth(750),
-                    height: ScreenUtil().setHeight(90),
-                    child: DetailsBottom(data))
-              ],
-            )));
+                        )),
+                    Positioned(
+                        left: 0,
+                        bottom: 0,
+                        width: ScreenUtil().setWidth(750),
+                        height: ScreenUtil().setHeight(90),
+                        child: DetailsBottom(res.data['result']))
+                  ],
+                ));
+          }
+        },
+      ),
+    );
   }
 
 //图片
@@ -174,52 +171,55 @@ class _DetailsState extends State<Details> {
       ],
     ));
   }
+
   // 底部
   Widget DetailsBottom(item) {
-  return Container(
-      color: Colors.white,
-      width: ScreenUtil().setWidth(750),
-      height: ScreenUtil().setHeight(90),
-      child: Row(
-        children: <Widget>[
-          new Container(
-            width: ScreenUtil().setWidth(108),
-            height: ScreenUtil().setHeight(90),
-            child: Icon(
-              Icons.shopping_cart,
-              color: Color(0xfff1433b),
-            ),
-          ),
-          new Container(
-            width: ScreenUtil().setWidth(320),
-            height: ScreenUtil().setHeight(90),
-            child: FlatButton(
-              onPressed: () {
-                Routerapply.router.navigateTo(context, "cart");
-                Provide.value<Cartadd>(context).add(item);
-              },
-              child: Text(
-                '加入购物车',
-                style: TextStyle(color: Colors.white),
+    return Container(
+        color: Colors.white,
+        width: ScreenUtil().setWidth(750),
+        height: ScreenUtil().setHeight(90),
+        child: Row(
+          children: <Widget>[
+            new Container(
+              width: ScreenUtil().setWidth(108),
+              height: ScreenUtil().setHeight(90),
+              child: Icon(
+                Icons.shopping_cart,
+                color: Color(0xfff1433b),
               ),
-              color: Color(0xff50ae55),
             ),
-          ),
-          new Container(
-            width: ScreenUtil().setWidth(320),
-            height: ScreenUtil().setHeight(90),
-            child: FlatButton(
-              onPressed: () {},
-              child: Text(
-                '立即购买',
-                style: TextStyle(color: Colors.white),
+            new Container(
+              width: ScreenUtil().setWidth(320),
+              height: ScreenUtil().setHeight(90),
+              child: FlatButton(
+                onPressed: () {
+                  print(
+                      '-----------------------------------------------------------------------------------');
+                  print(item);
+                  Provide.value<Cartadd>(context).add(item);
+                },
+                child: Text(
+                  '加入购物车',
+                  style: TextStyle(color: Colors.white),
+                ),
+                color: Color(0xff50ae55),
               ),
-              color: Color(0xfff1453d),
             ),
-          ),
-        ],
-      ));
-}
+            new Container(
+              width: ScreenUtil().setWidth(320),
+              height: ScreenUtil().setHeight(90),
+              child: FlatButton(
+                onPressed: () {},
+                child: Text(
+                  '立即购买',
+                  style: TextStyle(color: Colors.white),
+                ),
+                color: Color(0xfff1453d),
+              ),
+            ),
+          ],
+        ));
+  }
 }
 
 class DetailsPhope extends StatefulWidget {
@@ -261,5 +261,3 @@ class _DetailsPhopeState extends State<DetailsPhope> {
     );
   }
 }
-
-
