@@ -192,7 +192,7 @@ class CartPageWidgetState extends State<CartPageWidget> {
                 Positioned(
                   width: ScreenUtil().setWidth(750),
                   height: ScreenUtil().setHeight(100),
-                  bottom: ScreenUtil().setHeight(100),
+                  bottom: ScreenUtil().setHeight(0),
                   left: 0,
                   child: Container(
                     width: ScreenUtil().setHeight(750),

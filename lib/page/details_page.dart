@@ -8,22 +8,15 @@ import '../provide/cart_details.dart';
 
 class Details extends StatefulWidget {
   final String goodsId;
-  List list;
   Details(this.goodsId); //路由跳转传值
   @override
   _DetailsState createState() => _DetailsState(goodsId);
 }
 
 class _DetailsState extends State<Details> {
-  final String goodsId;
-  _DetailsState(this.goodsId); //路由跳转传值
-
-  void initState() {
-    super.initState();
-    print(this.goodsId);
-  }
-
-  var data;
+  // final String goodsId;
+  _DetailsState(goodsId); //路由跳转传值
+  List list;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,71 +29,88 @@ class _DetailsState extends State<Details> {
       body: FutureBuilder(
         future: request('detailsList', 'get', {'id': widget.goodsId}),
         builder: (context, res) {
-          print(res.data['result']);
+          print('------------------111111111111111111----------------');
+          print(res);
           res.data['result']['pic'] =
               res.data['result']['pic'].replaceAll(new RegExp(r'\\'), '/');
-          if (res.data == null) {
-            return new Center(
-              child: Text('正在加载。。'),
-            );
-          } else {
-            return ConstrainedBox(
-                constraints: BoxConstraints.expand(),
-                child: Stack(
-                  alignment: Alignment.center,
-                  children: <Widget>[
-                    Positioned(
-                        width: ScreenUtil().setWidth(750),
-                        height: ScreenUtil().setHeight(1330),
-                        top: 0,
-                        child: ListView(
-                          children: <Widget>[
-                            _DetailsImage(res.data['result']['pic']),
-                            new Container(
-                              width: ScreenUtil().setWidth(750),
-                              height: ScreenUtil().setHeight(165),
-                              padding: EdgeInsets.only(
-                                  left: ScreenUtil().setWidth(30)),
-                              child: Column(
-                                children: <Widget>[
-                                  _DetailsName(res.data['result']['title']),
-                                  _DetailsNum(),
-                                  _DetailsPrice(res.data['result']['price'],
-                                      res.data['result']['old_price'])
-                                ],
+          return ConstrainedBox(
+                  constraints: BoxConstraints.expand(),
+                  child:res.data== null
+              ?  Container(
+                  padding: EdgeInsets.symmetric(vertical: 15),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Text(
+                        '努力加载中...',
+                        style: TextStyle(
+                          fontSize: ScreenUtil().setSp(24),
+                          color: Color(0xFF333333),
+                        ),
+                      ),
+                      Padding(padding: EdgeInsets.only(left: 10)),
+                      SizedBox(
+                        width: ScreenUtil().setWidth(40),
+                        height: ScreenUtil().setHeight(40),
+                        child: CircularProgressIndicator(strokeWidth: 3),
+                      ),
+                    ],
+                  ),
+                )
+              :  Stack(
+                    alignment: Alignment.center,
+                    children: <Widget>[
+                      Positioned(
+                          width: ScreenUtil().setWidth(750),
+                          height: ScreenUtil().setHeight(1330),
+                          top: 0,
+                          child: ListView(
+                            children: <Widget>[
+                              _DetailsImage(res.data['result']['pic']),
+                              new Container(
+                                width: ScreenUtil().setWidth(750),
+                                height: ScreenUtil().setHeight(165),
+                                padding: EdgeInsets.only(
+                                    left: ScreenUtil().setWidth(30)),
+                                child: Column(
+                                  children: <Widget>[
+                                    _DetailsName(res.data['result']['title']),
+                                    _DetailsNum(),
+                                    _DetailsPrice(res.data['result']['price'],
+                                        res.data['result']['old_price'])
+                                  ],
+                                ),
                               ),
-                            ),
-                            new Container(
-                              padding: EdgeInsets.only(
-                                  left: ScreenUtil().setWidth(30)),
-                              margin: EdgeInsets.only(
-                                  top: ScreenUtil().setHeight(25),
-                                  bottom: ScreenUtil().setHeight(16)),
-                              width: ScreenUtil().setWidth(750),
-                              height: ScreenUtil().setHeight(76),
-                              child: Text('说明:>极速送达>正品保障',
-                                  style: TextStyle(
-                                    fontSize: ScreenUtil().setSp(26),
-                                    color: Color(0xfff5837d),
-                                  )),
-                            ),
-                            DetailsPhope(),
-                            new Container(
-                              child: Html(
-                                data: res.data['result']['content'],
+                              new Container(
+                                padding: EdgeInsets.only(
+                                    left: ScreenUtil().setWidth(30)),
+                                margin: EdgeInsets.only(
+                                    top: ScreenUtil().setHeight(25),
+                                    bottom: ScreenUtil().setHeight(16)),
+                                width: ScreenUtil().setWidth(750),
+                                height: ScreenUtil().setHeight(76),
+                                child: Text('说明:>极速送达>正品保障',
+                                    style: TextStyle(
+                                      fontSize: ScreenUtil().setSp(26),
+                                      color: Color(0xfff5837d),
+                                    )),
                               ),
-                            ),
-                          ],
-                        )),
-                    Positioned(
-                        left: 0,
-                        bottom: 0,
-                        width: ScreenUtil().setWidth(750),
-                        height: ScreenUtil().setHeight(90),
-                        child: DetailsBottom(res.data['result']))
-                  ],
-                ));
-          }
+                              DetailsPhope(),
+                              new Container(
+                                child: Html(
+                                  data: res.data['result']['content'],
+                                ),
+                              ),
+                            ],
+                          )),
+                      Positioned(
+                          left: 0,
+                          bottom: 0,
+                          width: ScreenUtil().setWidth(750),
+                          height: ScreenUtil().setHeight(90),
+                          child: DetailsBottom(res.data['result']))
+                    ],
+                  ));
         },
       ),
     );
@@ -197,6 +207,7 @@ class _DetailsState extends State<Details> {
                       '-----------------------------------------------------------------------------------');
                   print(item);
                   Provide.value<Cartadd>(context).add(item);
+                  Routerapply.router.navigateTo(context, '/cart');
                 },
                 child: Text(
                   '加入购物车',
@@ -231,7 +242,6 @@ class DetailsPhope extends StatefulWidget {
 
 class _DetailsPhopeState extends State<DetailsPhope> {
   @override
-  var list = ["详情", "评论"];
   Widget build(BuildContext context) {
     return Container(
       width: ScreenUtil().setWidth(750),

@@ -2,13 +2,13 @@ import 'package:demo_life/http/server.dart';
 import 'package:flutter/material.dart'; //ui组件
 import 'package:flutter/rendering.dart';
 import 'package:flutter_swiper/flutter_swiper.dart'; //轮播组件
-import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart'; //  屏幕适配
 import 'package:provide/provide.dart';
 import '../http/server.dart';
 import 'package:toast/toast.dart';
 import '../router/routerapply.dart';
 import '../provide/details_state.dart';
+
 class HomePageWidget extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
@@ -288,59 +288,59 @@ class HomePageWidgetState extends State<HomePageWidget> {
   Widget _hot(BuildContext context, items) {
     // 相当于 75行   children: items, 中的items    下面就是循环遍历    自己写样式  再看372-374
     return InkWell(
-      onTap: (){
-         print(items['_id']);
-          Routerapply.router.navigateTo(context, '/details?id=${items['_id']}');
-          Provide.value<DetailsProvide>(context).detailsId(items['_id']);
+      onTap: () {
+        print(items['_id']);
+        Routerapply.router.navigateTo(context, '/details?id=${items['_id']}');
+        Provide.value<DetailsProvide>(context).detailsId(items['_id']);
       },
       child: Container(
-      child: Column(
-        children: <Widget>[
-          new Container(
-            width: ScreenUtil().setWidth(368),
-            height: ScreenUtil().setHeight(440),
-            color: Colors.white,
-            child: new Column(
-              children: <Widget>[
-                new Container(
-                  child: Image.network(
-                    'http://jd.itying.com/' + items['pic'],
-                    width: ScreenUtil().setHeight(368),
-                    height: ScreenUtil().setHeight(345),
+        child: Column(
+          children: <Widget>[
+            new Container(
+              width: ScreenUtil().setWidth(368),
+              height: ScreenUtil().setHeight(440),
+              color: Colors.white,
+              child: new Column(
+                children: <Widget>[
+                  new Container(
+                    child: Image.network(
+                      'http://jd.itying.com/' + items['pic'],
+                      width: ScreenUtil().setHeight(368),
+                      height: ScreenUtil().setHeight(345),
+                    ),
                   ),
-                ),
-                new Container(
-                  child: Text(
-                    items['title'],
-                    style: TextStyle(
-                        color: Colors.red, fontSize: ScreenUtil().setSp(25)),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
+                  new Container(
+                    child: Text(
+                      items['title'],
+                      style: TextStyle(
+                          color: Colors.red, fontSize: ScreenUtil().setSp(25)),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ),
-                ),
-                new Container(
-                  child: Row(
-                    children: <Widget>[
-                      new Container(
-                          child: Text('￥${items['price']}',
-                              style:
-                                  TextStyle(fontSize: ScreenUtil().setSp(20)))),
-                      new Container(
-                          child: Text('￥${items['old_price']}',
-                              style: TextStyle(
-                                  fontSize: ScreenUtil().setSp(20),
-                                  decoration: TextDecoration.lineThrough,
-                                  color: Color(0xffcccccc)))),
-                    ],
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  ),
-                )
-              ],
+                  new Container(
+                    child: Row(
+                      children: <Widget>[
+                        new Container(
+                            child: Text('￥${items['price']}',
+                                style: TextStyle(
+                                    fontSize: ScreenUtil().setSp(20)))),
+                        new Container(
+                            child: Text('￥${items['old_price']}',
+                                style: TextStyle(
+                                    fontSize: ScreenUtil().setSp(20),
+                                    decoration: TextDecoration.lineThrough,
+                                    color: Color(0xffcccccc)))),
+                      ],
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    ),
+                  )
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
-    ),
     );
   }
 
@@ -373,59 +373,59 @@ class HomePageWidgetState extends State<HomePageWidget> {
   Widget _new(BuildContext context, items) {
     // 相当于 75行   children: items, 中的items    下面就是循环遍历    自己写样式  再看372-374
     return InkWell(
-      onTap: (){
-         print(items['_id']);
-          Routerapply.router.navigateTo(context, '/details?id=${items['_id']}');
-          Provide.value<DetailsProvide>(context).detailsId(items['_id']);
+      onTap: () {
+        print(items['_id']);
+        Routerapply.router.navigateTo(context, '/details?id=${items['_id']}');
+        Provide.value<DetailsProvide>(context).detailsId(items['_id']);
       },
       child: Container(
-      child: Column(
-        children: <Widget>[
-          new Container(
-            width: ScreenUtil().setWidth(368),
-            height: ScreenUtil().setHeight(440),
-            color: Colors.white,
-            child: new Column(
-              children: <Widget>[
-                new Container(
-                  child: Image.network(
-                    'http://jd.itying.com/' + items['pic'],
-                    width: ScreenUtil().setHeight(368),
-                    height: ScreenUtil().setHeight(345),
+        child: Column(
+          children: <Widget>[
+            new Container(
+              width: ScreenUtil().setWidth(368),
+              height: ScreenUtil().setHeight(440),
+              color: Colors.white,
+              child: new Column(
+                children: <Widget>[
+                  new Container(
+                    child: Image.network(
+                      'http://jd.itying.com/' + items['pic'],
+                      width: ScreenUtil().setHeight(368),
+                      height: ScreenUtil().setHeight(345),
+                    ),
                   ),
-                ),
-                new Container(
-                  child: Text(
-                    items['title'],
-                    style: TextStyle(
-                        color: Colors.red, fontSize: ScreenUtil().setSp(25)),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
+                  new Container(
+                    child: Text(
+                      items['title'],
+                      style: TextStyle(
+                          color: Colors.red, fontSize: ScreenUtil().setSp(25)),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ),
-                ),
-                new Container(
-                  child: Row(
-                    children: <Widget>[
-                      new Container(
-                          child: Text('￥${items['price']}',
-                              style:
-                                  TextStyle(fontSize: ScreenUtil().setSp(20)))),
-                      new Container(
-                          child: Text('￥${items['old_price']}',
-                              style: TextStyle(
-                                  fontSize: ScreenUtil().setSp(20),
-                                  decoration: TextDecoration.lineThrough,
-                                  color: Color(0xffcccccc)))),
-                    ],
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  ),
-                )
-              ],
+                  new Container(
+                    child: Row(
+                      children: <Widget>[
+                        new Container(
+                            child: Text('￥${items['price']}',
+                                style: TextStyle(
+                                    fontSize: ScreenUtil().setSp(20)))),
+                        new Container(
+                            child: Text('￥${items['old_price']}',
+                                style: TextStyle(
+                                    fontSize: ScreenUtil().setSp(20),
+                                    decoration: TextDecoration.lineThrough,
+                                    color: Color(0xffcccccc)))),
+                      ],
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    ),
+                  )
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
-    ),
     );
   }
 
@@ -458,59 +458,59 @@ class HomePageWidgetState extends State<HomePageWidget> {
   Widget _Hot(BuildContext context, items) {
     // 相当于 75行   children: items, 中的items    下面就是循环遍历    自己写样式  再看372-374
     return InkWell(
-      onTap: (){
-         print(items['_id']);
-          Routerapply.router.navigateTo(context, '/details?id=${items['_id']}');
-          Provide.value<DetailsProvide>(context).detailsId(items['_id']);
+      onTap: () {
+        print(items['_id']);
+        Routerapply.router.navigateTo(context, '/details?id=${items['_id']}');
+        Provide.value<DetailsProvide>(context).detailsId(items['_id']);
       },
       child: Container(
-      child: Column(
-        children: <Widget>[
-          new Container(
-            width: ScreenUtil().setWidth(368),
-            height: ScreenUtil().setHeight(440),
-            color: Colors.white,
-            child: new Column(
-              children: <Widget>[
-                new Container(
-                  child: Image.network(
-                    'http://jd.itying.com/' + items['pic'],
-                    width: ScreenUtil().setHeight(368),
-                    height: ScreenUtil().setHeight(345),
+        child: Column(
+          children: <Widget>[
+            new Container(
+              width: ScreenUtil().setWidth(368),
+              height: ScreenUtil().setHeight(440),
+              color: Colors.white,
+              child: new Column(
+                children: <Widget>[
+                  new Container(
+                    child: Image.network(
+                      'http://jd.itying.com/' + items['pic'],
+                      width: ScreenUtil().setHeight(368),
+                      height: ScreenUtil().setHeight(345),
+                    ),
                   ),
-                ),
-                new Container(
-                  child: Text(
-                    items['title'],
-                    style: TextStyle(
-                        color: Colors.red, fontSize: ScreenUtil().setSp(25)),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
+                  new Container(
+                    child: Text(
+                      items['title'],
+                      style: TextStyle(
+                          color: Colors.red, fontSize: ScreenUtil().setSp(25)),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ),
-                ),
-                new Container(
-                  child: Row(
-                    children: <Widget>[
-                      new Container(
-                          child: Text('￥${items['price']}',
-                              style:
-                                  TextStyle(fontSize: ScreenUtil().setSp(20)))),
-                      new Container(
-                          child: Text('￥${items['old_price']}',
-                              style: TextStyle(
-                                  fontSize: ScreenUtil().setSp(20),
-                                  decoration: TextDecoration.lineThrough,
-                                  color: Color(0xffcccccc)))),
-                    ],
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  ),
-                )
-              ],
+                  new Container(
+                    child: Row(
+                      children: <Widget>[
+                        new Container(
+                            child: Text('￥${items['price']}',
+                                style: TextStyle(
+                                    fontSize: ScreenUtil().setSp(20)))),
+                        new Container(
+                            child: Text('￥${items['old_price']}',
+                                style: TextStyle(
+                                    fontSize: ScreenUtil().setSp(20),
+                                    decoration: TextDecoration.lineThrough,
+                                    color: Color(0xffcccccc)))),
+                      ],
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    ),
+                  )
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
-    ),
     );
   }
 
@@ -626,14 +626,23 @@ class HomePageWidgetState extends State<HomePageWidget> {
                     child: new Swiper(
                       //轮播
                       itemBuilder: (BuildContext context, int index) {
-                        return Container(
-                          child: Image.network(
-                            'http://jd.itying.com/${arr[index]['pic']}',
-                            fit: BoxFit.fill,
-                          ),
-                          width: ScreenUtil().setWidth(750),
-                          height: ScreenUtil().setHeight(356),
-                        );
+                        return arr == null
+                            ? Container(
+                                child: Image.network(
+                                  'https://gss0.bdstatic.com/70cFfyinKgQIm2_p8IuM_a/daf/pic/item/35a85edf8db1cb138750cb49d254564e92584bab.jpg',
+                                  fit: BoxFit.fill,
+                                ),
+                                width: ScreenUtil().setWidth(750),
+                                height: ScreenUtil().setHeight(356),
+                              )
+                            : Container(
+                                child: Image.network(
+                                  'http://jd.itying.com/${arr[index]['pic']}',
+                                  fit: BoxFit.fill,
+                                ),
+                                width: ScreenUtil().setWidth(750),
+                                height: ScreenUtil().setHeight(356),
+                              );
                       },
                       itemCount: 3,
                       autoplay: true,
@@ -692,7 +701,30 @@ class HomePageWidgetState extends State<HomePageWidget> {
                     margin: EdgeInsets.only(bottom: ScreenUtil().setHeight(10)),
                   ),
                   new Container(
-                    child: _newList(context),
+                    child: newList == null
+                        ? Container(
+                            padding: EdgeInsets.symmetric(vertical: 15),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Text(
+                                  '努力加载中...',
+                                  style: TextStyle(
+                                    fontSize: ScreenUtil().setSp(24),
+                                    color: Color(0xFF333333),
+                                  ),
+                                ),
+                                Padding(padding: EdgeInsets.only(left: 10)),
+                                SizedBox(
+                                  width:  ScreenUtil().setWidth(40),
+                                  height:  ScreenUtil().setHeight(40),
+                                  child:
+                                      CircularProgressIndicator(strokeWidth: 3),
+                                ),
+                              ],
+                            ),
+                          )
+                        : _newList(context),
                   ),
                   // 热门专区
                   new Container(
@@ -704,7 +736,30 @@ class HomePageWidgetState extends State<HomePageWidget> {
                     margin: EdgeInsets.only(bottom: ScreenUtil().setHeight(20)),
                   ),
                   new Container(
-                    child: _HotList(context),
+                    child: newList == null
+                        ?  Container(
+                            padding: EdgeInsets.symmetric(vertical: 15),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Text(
+                                  '努力加载中...',
+                                  style: TextStyle(
+                                    fontSize: ScreenUtil().setSp(24),
+                                    color: Color(0xFF333333),
+                                  ),
+                                ),
+                                Padding(padding: EdgeInsets.only(left: 10)),
+                                SizedBox(
+                                  width:  ScreenUtil().setWidth(40),
+                                  height:  ScreenUtil().setHeight(40),
+                                  child:
+                                      CircularProgressIndicator(strokeWidth: 3),
+                                ),
+                              ],
+                            ),
+                          )
+                        : _HotList(context),
                   ),
                   // 精华专区
                   new Container(
@@ -716,7 +771,30 @@ class HomePageWidgetState extends State<HomePageWidget> {
                     margin: EdgeInsets.only(bottom: ScreenUtil().setHeight(20)),
                   ),
                   new Container(
-                    child: _BestList(context),
+                    child: newList == null
+                        ?  Container(
+                            padding: EdgeInsets.symmetric(vertical: 15),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Text(
+                                  '努力加载中...',
+                                  style: TextStyle(
+                                    fontSize: ScreenUtil().setSp(24),
+                                    color: Color(0xFF333333),
+                                  ),
+                                ),
+                                Padding(padding: EdgeInsets.only(left: 10)),
+                                SizedBox(
+                                  width:  ScreenUtil().setWidth(40),
+                                  height:  ScreenUtil().setHeight(40),
+                                  child:
+                                      CircularProgressIndicator(strokeWidth: 3),
+                                ),
+                              ],
+                            ),
+                          )
+                        : _BestList(context),
                   ),
                   // 全部商品
                   new Container(
@@ -728,8 +806,31 @@ class HomePageWidgetState extends State<HomePageWidget> {
                     margin: EdgeInsets.only(bottom: ScreenUtil().setHeight(20)),
                   ),
                   new Container(
-                    child: _hotList(
-                        context), //创建的自定义组件   拿来这里进行渲染 要带参数context    语法就这样
+                    child: newList == null
+                        ?  Container(
+                            padding: EdgeInsets.symmetric(vertical: 15),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Text(
+                                  '努力加载中...',
+                                  style: TextStyle(
+                                    fontSize: ScreenUtil().setSp(24),
+                                    color: Color(0xFF333333),
+                                  ),
+                                ),
+                                Padding(padding: EdgeInsets.only(left: 10)),
+                                SizedBox(
+                                  width:  ScreenUtil().setWidth(40),
+                                  height:  ScreenUtil().setHeight(40),
+                                  child:
+                                      CircularProgressIndicator(strokeWidth: 3),
+                                ),
+                              ],
+                            ),
+                          )
+                        : _hotList(
+                            context), //创建的自定义组件   拿来这里进行渲染 要带参数context    语法就这样
                   ),
                   renderBottom(),
                 ])));
@@ -769,3 +870,41 @@ class Mynine extends StatelessWidget {
     );
   }
 }
+
+// class HomePage extends StatefulWidget {
+//   @override
+//   State<StatefulWidget> createState() {
+//     return HomePageState();
+//   }
+// }
+
+// class HomePageState extends State<HomePage> {
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//         body: Center(
+//       child: Padding(
+//         padding: EdgeInsets.only(top: 200),
+//         child: FlatButton(
+//             onPressed: () async {
+//               //ProgressDialog.showProgress(context);
+
+//               ProgressDialog.showProgress(context, child: SpinKitFadingCircle(
+//                 itemBuilder: (_, int index) {
+//                   return DecoratedBox(
+//                     decoration: BoxDecoration(
+//                       color: index.isEven ? Colors.red : Colors.green,
+//                     ),
+//                   );
+//                 },
+//               ));
+
+//               Future.delayed(Duration(seconds: 3)).then((_) {
+//                 ProgressDialog.dismiss(context);
+//               });
+//             },
+//             child: Text("展示")),
+//       ),
+//     ));
+//   }
+// }
